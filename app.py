@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+import importlib.util
 
 # Automatically install required packages if not already installed
 REQUIRED_PACKAGES = [
@@ -18,6 +19,10 @@ for package in REQUIRED_PACKAGES:
         __import__(package.split("-")[0])  # crude but works for most packages
     except ImportError:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Install langchain-serpapi if not present
+if importlib.util.find_spec("langchain_community.tools.serpapi.wrapper") is None:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain-serpapi"])
 
 import streamlit as st
 from langchain.agents import initialize_agent, Tool
