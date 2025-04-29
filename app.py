@@ -1,10 +1,30 @@
+import os
+import subprocess
+import sys
+
+# Automatically install required packages if not already installed
+REQUIRED_PACKAGES = [
+    "langchain",
+    "langchain-community",
+    "langchain-serpapi",
+    "openai",
+    "serpapi",
+    "streamlit",
+    "python-dotenv"
+]
+
+for package in REQUIRED_PACKAGES:
+    try:
+        __import__(package.split("-")[0])  # crude but works for most packages
+    except ImportError:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
 import streamlit as st
 from langchain.agents import initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
 from langchain.chat_models import ChatOpenAI
 from langchain_community.tools.serpapi.tool import SerpAPIWrapper
 from langchain.callbacks.base import BaseCallbackHandler
-import os
 
 # Set up Streamlit app
 st.set_page_config(page_title="Agentic AI Demo with Logs", layout="centered")
