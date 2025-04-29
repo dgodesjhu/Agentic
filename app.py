@@ -23,7 +23,7 @@ import streamlit as st
 from langchain.agents import initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
 from langchain.chat_models import ChatOpenAI
-from langchain_community.tools.serpapi.tool import SerpAPIWrapper
+from langchain_community.tools.serpapi.wrapper import SerpAPIWrapper
 from langchain.callbacks.base import BaseCallbackHandler
 
 # Set up Streamlit app
