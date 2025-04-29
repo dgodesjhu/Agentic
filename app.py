@@ -1,7 +1,11 @@
 import os
 import subprocess
 import sys
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain-serpapi"])
+
 import importlib.util
+
 
 # Automatically install required packages if not already installed
 REQUIRED_PACKAGES = [
@@ -13,7 +17,6 @@ REQUIRED_PACKAGES = [
     "streamlit",
     "python-dotenv"
 ]
-
 for package in REQUIRED_PACKAGES:
     try:
         __import__(package.split("-")[0])  # crude but works for most packages
