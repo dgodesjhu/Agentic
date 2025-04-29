@@ -8,7 +8,7 @@ import os
 
 # Set up Streamlit app
 st.set_page_config(page_title="Agentic AI Demo with Logs", layout="centered")
-st.title("🤖 Agentic AI for Marketing: Product Comparison")
+st.title("Agentic AI for Marketing: Product Comparison")
 st.subheader("Now with Step-by-Step Agent Logs")
 
 st.markdown("""
@@ -16,8 +16,8 @@ This demo shows how an **agentic AI system** reasons step by step, uses tools, a
 """)
 
 # API keys
-openai_api_key = st.text_input("🔑 OpenAI API Key", type="password")
-serpapi_key = st.text_input("🔍 SerpAPI Key", type="password")
+openai_api_key = st.text_input("OpenAI API Key", type="password")
+serpapi_key = st.text_input("SerpAPI Key", type="password")
 
 # Product inputs
 product1 = st.text_input("Product 1", value="Nike Pegasus")
@@ -37,13 +37,13 @@ class StreamlitCallbackHandler(BaseCallbackHandler):
         pass
 
     def on_tool_start(self, tool, input_str, **kwargs):
-        self.container.markdown(f"🛠 **Tool Call:** `{tool}` with input: `{input_str}`")
+        self.container.markdown(f"**Tool Call:** `{tool}` with input: `{input_str}`")
 
     def on_tool_end(self, output, **kwargs):
-        self.container.markdown(f"📄 **Tool Output:** {output[:500]}{'...' if len(output) > 500 else ''}")
+        self.container.markdown(f"**Tool Output:** {output[:500]}{'...' if len(output) > 500 else ''}")
 
     def on_text(self, text, **kwargs):
-        self.container.markdown(f"🧠 **Agent Thought:** {text}")
+        self.container.markdown(f"**Agent Thought:** {text}")
 
 if run_button:
     if not openai_api_key or not serpapi_key:
@@ -89,7 +89,7 @@ Focus on what would be relevant to consumers choosing between them.
         try:
             output = agent.run(prompt)
             st.success("Agent completed the task.")
-            st.markdown("### ✍️ Marketing Summary")
+            st.markdown("### Marketing Summary")
             st.write(output)
         except Exception as e:
             st.error(f"Agent failed: {str(e)}")
