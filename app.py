@@ -2,36 +2,33 @@ import os
 import subprocess
 import sys
 
-subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain-serpapi"])
+# Ensure langchain-serpapi is installed early
+subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain-serpapi", "--quiet"])
 
-import importlib.util
-
-
-# Automatically install required packages if not already installed
+# Automatically install other required packages
 REQUIRED_PACKAGES = [
     "langchain",
     "langchain-community",
-    "langchain-serpapi",
     "openai",
     "serpapi",
     "streamlit",
     "python-dotenv"
 ]
+
 for package in REQUIRED_PACKAGES:
     try:
-        __import__(package.split("-")[0])  # crude but works for most packages
+        __import__(package.split("-")[0])
     except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--quiet"])
 
-# Install langchain-serpapi if not present
-if importlib.util.find_spec("langchain_community.tools.serpapi.wrapper") is None:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "langchain-serpapi"])
+# ✅ All required packages should be installed at this point
 
+# Now the safe imports (must come after installs)
 import streamlit as st
 from langchain.agents import initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
-from langchain.chat_models import ChatOpenAI
-from langchain_community.tools.serpapi.wrapper import SerpAPIWrapper
+from langchain_community.chat_models import ChatOpenAI  # ✅ FIXED
+from langchain_community.tools.serpapi.wrapper import SerpAPIWrapper  # ✅ CORRECT
 from langchain.callbacks.base import BaseCallbackHandler
 
 # Set up Streamlit app
