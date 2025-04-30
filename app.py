@@ -37,8 +37,13 @@ This demo shows how an **agentic AI system** reasons step by step, uses tools, a
 """)
 
 # API keys
-openai_api_key = st.text_input("OpenAI_API_Key", type="password")
-serpapi_key = st.text_input("SerpAPI_Key", type="password")
+#openai_api_key = st.text_input("OpenAI_API_Key", type="password")
+#serpapi_key = st.text_input("SerpAPI_Key", type="password")
+
+openai_api_key = st.secrets["api_keys"]["OpenAI_API_Key"]
+serpapi_key = st.secrets["api_keys"]["SerpAPI_Key"]
+os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["SERPAPI_API_KEY"] = serpapi_key
 
 # Product inputs
 product1 = st.text_input("Product 1", value="Nike Pegasus")
