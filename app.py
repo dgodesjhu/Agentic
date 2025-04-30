@@ -8,6 +8,7 @@ REQUIRED_PACKAGES = [
     "langchain-community",
     "openai",
     "serpapi",
+    "google-search-results",
     "streamlit",
     "python-dotenv"
 ]
@@ -36,8 +37,8 @@ This demo shows how an **agentic AI system** reasons step by step, uses tools, a
 """)
 
 # API keys
-openai_api_key = st.text_input("OpenAI API Key", type="password")
-serpapi_key = st.text_input("SerpAPI Key", type="password")
+openai_api_key = st.text_input("OpenAI_API_Key", type="password")
+serpapi_key = st.text_input("SerpAPI_Key", type="password")
 
 # Product inputs
 product1 = st.text_input("Product 1", value="Nike Pegasus")
