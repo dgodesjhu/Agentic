@@ -2,13 +2,15 @@ import os
 import subprocess
 import sys
 
-# Auto-install essential packages (excluding langchain-serpapi)
+# --- Force-install critical packages (especially google-search-results) ---
+subprocess.check_call([sys.executable, "-m", "pip", "install", "google-search-results", "--quiet"])
+
+# --- Install other required packages if not already installed ---
 REQUIRED_PACKAGES = [
     "langchain",
     "langchain-community",
     "openai",
     "serpapi",
-    "google-search-results",
     "streamlit",
     "python-dotenv"
 ]
@@ -19,13 +21,26 @@ for package in REQUIRED_PACKAGES:
     except ImportError:
         subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--quiet"])
 
-# ✅ Imports now safe after install
+# --- Import all libraries (after installation) ---
 import streamlit as st
 from langchain.agents import initialize_agent, Tool
 from langchain.agents.agent_types import AgentType
 from langchain_community.chat_models import ChatOpenAI
-from langchain.utilities.serpapi import SerpAPIWrapper  # ✅ Compatible wrapper (no langchain-serpapi needed)
+from langchain.utilities.serpapi import SerpAPIWrapper
 from langchain.callbacks.base import BaseCallbackHandler
+
+# --- Load API keys from Streamlit secrets ---
+openai_api_key = st.secrets["api_keys"]["openai"]
+serpapi_key = st.secrets["api_keys"]["serpapi"]
+
+# --- Set environment variables for LangChain and SerpAPI access ---
+os.environ["OPENAI_API_KEY"] = openai_api_key
+os.environ["SERPAPI_API_KEY"] = serpapi_key
+
+# --- Optional: Confirm keys loaded (for debugging only) ---
+# st.write("Loaded SERPAPI_API_KEY:", os.environ.get("SERPAPI_API_KEY"))
+# st.write("Loaded OPENAI_API_KEY:", os.environ.get("OPENAI_API_KEY"))
+
 
 # Set up Streamlit app
 st.set_page_config(page_title="Agentic AI Demo with Logs", layout="centered")
@@ -39,12 +54,6 @@ This demo shows how an **agentic AI system** reasons step by step, uses tools, a
 # API keys
 #openai_api_key = st.text_input("OpenAI_API_Key", type="password")
 #serpapi_key = st.text_input("SerpAPI_Key", type="password")
-
-openai_api_key = st.secrets["api_keys"]["openai"]
-serpapi_key = st.secrets["api_keys"]["serpapi"]
-
-os.environ["OPENAI_API_KEY"] = openai_api_key
-os.environ["SERPAPI_API_KEY"] = serpapi_key
 
 # Product inputs
 product1 = st.text_input("Product 1", value="Nike Pegasus")
